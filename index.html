@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공장·플랜트 작업·안전관리 통합 웹서비스 구축 — 제안 자료 (위시켓 158930)</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="위시켓 158930 제안 자료 — 웹 제안서와 작업안전 통합관리 프로토타입.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  --red-700:#DC2828; --red-800:#C00000; --coral:#FF675C; --coral-300:#FF9A92;
+  --coral-150:#FFCBC9; --coral-100:#FFEDEC; --coral-50:#FFF6F5;
+  --ink-900:#000; --ink-700:#3F3F3F; --ink-600:#595959; --ink-500:#5F5F5F;
+  --line:#DCDCDC; --line-soft:#EAEAEA; --surface-1:#F9F9F9; --white:#FFF;
+  --f:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,
+      'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;
+  --e:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%; color-scheme:light;}
+body{margin:0; min-height:100vh; background:
+    radial-gradient(1000px 420px at 86% -12%, rgba(220,40,40,.10), transparent 62%),
+    radial-gradient(720px 360px at 2% 108%, rgba(255,103,92,.11), transparent 60%),
+    linear-gradient(180deg,var(--coral-50),var(--surface-1) 60%);
+  color:var(--ink-700); font-family:var(--f); font-size:16px; line-height:1.7;
+  letter-spacing:-.01em; word-break:keep-all; -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;}
+h1,h2,h3{color:var(--ink-900); margin:0; font-weight:800; letter-spacing:-.03em; line-height:1.25;}
+p{margin:0;}
+a{color:var(--red-800); text-decoration:none;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em;
+  background:var(--coral-100); padding:1px 6px; border-radius:5px; color:var(--red-800);}
+:focus-visible{outline:3px solid var(--red-700); outline-offset:3px; border-radius:6px;}
+.wrap{width:100%; max-width:1080px; margin:0 auto; padding:0 clamp(18px,4vw,40px);}
+main{flex:1 0 auto; padding:clamp(44px,8vw,92px) 0 clamp(40px,6vw,72px);}
+
+.eyebrow{display:inline-flex; align-items:center; gap:9px; background:var(--white);
+  border:1px solid var(--coral-150); color:var(--red-800); font-size:12.5px; font-weight:800;
+  padding:7px 14px; border-radius:999px; box-shadow:0 1px 2px rgba(0,0,0,.06); margin-bottom:20px;}
+.eyebrow i{width:7px; height:7px; border-radius:50%; background:var(--red-700); flex:0 0 auto;}
+h1{font-size:clamp(26px,4.6vw,44px); letter-spacing:-.04em;}
+h1 em{font-style:normal; color:var(--red-800);}
+.lead{margin-top:16px; font-size:clamp(15px,1.7vw,17.5px); color:var(--ink-600); max-width:62ch;}
+
+.facts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:16px;
+  overflow:hidden; margin:30px 0 clamp(30px,4vw,44px);}
+.facts div{background:var(--white); padding:18px 20px;}
+.facts span{display:block; font-size:11px; font-weight:800; letter-spacing:.09em;
+  color:var(--ink-500); text-transform:uppercase; margin-bottom:8px;}
+.facts b{display:block; font-size:clamp(17px,2.1vw,21px); font-weight:800; color:var(--ink-900);
+  letter-spacing:-.03em; white-space:nowrap;}
+.facts b i{display:block; font-style:normal; font-size:.6em; font-weight:700; color:var(--ink-600);
+  margin:5px 0 0; white-space:normal; line-height:1.4;}
+
+.cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(16px,2.2vw,24px);}
+a.card{display:flex; flex-direction:column; gap:14px; background:var(--white); border:1px solid var(--line);
+  border-radius:22px; padding:clamp(24px,3vw,34px); box-shadow:0 1px 2px rgba(0,0,0,.06);
+  transition:transform .3s var(--e),box-shadow .3s,border-color .3s; min-height:100%;}
+a.card:hover{transform:translateY(-5px); box-shadow:0 18px 48px rgba(0,0,0,.13);
+  border-color:var(--coral-150);}
+a.card .ic{width:52px; height:52px; border-radius:16px; display:grid; place-items:center;
+  background:var(--coral-100); color:var(--red-800); flex:0 0 auto;}
+a.card.app .ic{background:#E3F2F0; color:#167A73;}
+a.card .tag{display:inline-block; font-size:11px; font-weight:800; letter-spacing:.09em;
+  color:var(--ink-500); text-transform:uppercase;}
+a.card h2{font-size:clamp(19px,2.3vw,24px);}
+a.card p{font-size:14.6px; color:var(--ink-600);}
+a.card ul{margin:0; padding:0; list-style:none; display:grid; gap:8px;}
+a.card li{position:relative; padding-left:17px; font-size:14px; color:var(--ink-600);}
+a.card li::before{content:''; position:absolute; left:2px; top:10px; width:6px; height:6px;
+  border-radius:50%; background:var(--red-700);}
+a.card.app li::before{background:#167A73;}
+a.card .go{margin-top:auto; display:inline-flex; align-items:center; gap:8px; font-size:14.5px;
+  font-weight:800; color:var(--red-800); padding-top:6px;}
+a.card.app .go{color:#167A73;}
+a.card.app:hover{border-color:#A9D8D2;}
+.shot{display:block; position:relative; flex:0 0 auto;
+  margin:calc(-1*clamp(24px,3vw,34px)) calc(-1*clamp(24px,3vw,34px)) 4px; height:148px;
+  border-radius:21px 21px 0 0; overflow:hidden; background:#142A32;}
+.proposal-shot{background:radial-gradient(circle at 78% 110%,rgba(255,255,255,.24),transparent 43%),
+  linear-gradient(125deg,#A91621 0%,#D52A30 56%,#F27266 100%);}
+.proposal-shot::before{content:""; position:absolute; inset:0;
+  background:repeating-linear-gradient(135deg,transparent 0 44px,rgba(255,255,255,.12) 44px 45px);}
+.proposal-shot::after{content:""; position:absolute; width:232px; height:232px; right:8%; top:-62px;
+  border:1px solid rgba(255,255,255,.38); border-radius:50%;
+  box-shadow:0 0 0 38px rgba(255,255,255,.07),0 0 0 80px rgba(255,255,255,.04);}
+.shot img{width:100%; height:100%; object-fit:cover; object-position:center 42%; display:block; transition:transform .6s var(--e);}
+.app-shot::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,42,50,0) 55%,rgba(20,42,50,.28));}
+a.card:hover .shot img{transform:scale(1.04);}
+.quick{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+.quick a{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:#167A73;
+  background:#F1F8F7; border:1px solid #A9D8D2; padding:6px 12px; border-radius:999px;}
+.quick a:hover{background:#E3F2F0;}
+a.card:hover .go svg{transform:translateX(4px);}
+a.card .go svg{transition:transform .24s var(--e);}
+svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.9;
+  stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto;}
+svg.s{width:17px; height:17px;}
+
+.note{margin-top:clamp(28px,4vw,42px); background:var(--white); border:1px solid var(--line);
+  border-left:4px solid var(--red-700); border-radius:14px; padding:20px 24px;}
+.note > b{display:block; color:var(--ink-900); font-size:14.6px; margin-bottom:7px;}
+.note p b{display:inline; color:var(--ink-900); font-size:inherit; margin:0;}
+.note p{font-size:14px; color:var(--ink-600);}
+.note + .note{margin-top:14px;}
+
+footer{flex:0 0 auto; border-top:1px solid var(--line); background:rgba(255,255,255,.65);
+  padding:22px 0; font-size:12.8px; color:var(--ink-500);}
+footer .wrap{display:flex; flex-wrap:wrap; gap:10px 20px; justify-content:space-between;}
+
+@media (max-width:860px){
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .cards{grid-template-columns:minmax(0,1fr);}
+}
+@media (max-width:420px){ .facts{grid-template-columns:minmax(0,1fr);} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;} }
+@media print{
+  body{background:#fff;}
+  a.card{break-inside:avoid; box-shadow:none;}
+}
+</style>
+</head>
+<body>
+
+<main>
+  <div class="wrap">
+    <span class="eyebrow"><i aria-hidden="true"></i>위시켓 158930 · 제안 자료</span>
+    <h1>공장·플랜트 작업·안전관리<br><em>통합 웹서비스 구축</em> 제안</h1>
+    <p class="lead">웹 제안서와 작업안전 통합관리 프로토타입을 준비했습니다.
+      별도 설치 없이 브라우저에서 바로 확인할 수 있으며, PC·태블릿·휴대폰 화면에 맞게 표시됩니다.</p>
+
+    <div class="facts">
+      <div><span>개발·납품 금액</span><b>25,000,000<i>원 · 부가세 별도 · 포함 시 27,500,000원</i></b></div>
+      <div><span>개발 기간</span><b>90<i>일 · 2026-11-02 ~ 2027-01-30 · 개발 84일 + 예비 6일</i></b></div>
+      <div><span>총 투입량</span><b>100.0<i>MD · 3.33 MM · 7명 · 전원 보유 인력</i></b></div>
+      <div><span>서버 운영 (월)</span><b>500,000<i>원 운영 관리비 · 부가세 별도 + 인프라 이용료 실비</i></b></div>
+    </div>
+
+    <div class="cards">
+      <a class="card doc" href="proposal/index.html">
+        <span class="shot proposal-shot" aria-hidden="true"></span>
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>
+        </span>
+        <div>
+          <span class="tag">자료 01</span>
+          <h2>웹 제안서</h2>
+        </div>
+        <p>제출 제안서의 핵심을 10개 섹션과 부록으로 정리했습니다. 과제 진단과 설계 관점부터
+          기간·예산, 일정·인력, 개발 범위, 품질 관리, 유지보수 계획까지 확인하실 수 있습니다.</p>
+        <ul>
+          <li>법정 서류 항목을 「양식 항목 정의서」 한 곳에서 관리하고, 입력 화면·저장 구조·엑셀 출력을 그 정의에서 만드는 구조 — 다섯 단계 QC와 측정 조건을 붙인 인수 기준 11개 항목</li>
+          <li>공고의 필수 과업 9개를 모두 포함한 90일·100.0 MD 계획 — 전체 범위 추정치(115~140 MD) 하한의 87.0%이며, 부족한 15.0 MD는 화면 표현과 출력 형식의 깊이를 조정해 맞추고 QC 공수는 줄이지 않았습니다</li>
+          <li>「아직 정하지 않은 범위」 3건(양식 전달 형태 · 기술 스택 · 서버 구성)의 권장안과 비용 차이, 월 운영 비용의 인프라 이용료 · 운영 관리비 · 장애 대응 범위 구분</li>
+          <li>투입 인력 7명(전원 보유 인력), 승인 게이트 4회, 검수 완료 후 하자보수 6개월 무상</li>
+        </ul>
+        <span class="go">웹 제안서 열기 <svg class="s" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a class="card app" href="prototype/index.html">
+        <span class="shot app-shot" aria-hidden="true"><img src="assets/cover-prototype.jpg" alt="" decoding="async"></span>
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 8 7 9 4-1 7-4.6 7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <div>
+          <span class="tag">자료 02</span>
+          <h2>작업안전 통합관리 화면</h2>
+        </div>
+        <p>제안한 서비스의 관리 웹(관리자 · 작업관리자 · 안전관리자 · 협력업체)과 <b>작업자 모바일 화면</b>을 직접 조작해 보실 수 있습니다.
+          작업 배정부터 안전 확인 · 완료 보고까지 업무 흐름을 따라 살펴볼 수 있습니다. 화면의 회사명·현장·인물·수치는 <b>모두 가상의 예시</b>입니다.</p>
+        <ul>
+          <li>처음에는 <b>로그인 화면</b>이 열립니다. 업무 영역을 고른 뒤 「체험 계정」에서 계정을 누르면 이메일과 비밀번호가 채워지고, 「로그인」을 누르면 바로 접속됩니다</li>
+          <li>작업 배정 → 작업자 본인 확인(휴대전화 뒤 4자리) → 필수 안전 점검 → 개인 승인 → 작업관리자 시작 승인 → 완료 보고. 작업자 전원 확인과 유효한 작업허가가 갖춰지기 전에는 <b>시작 승인이 거부</b>됩니다</li>
+          <li>양식 정의서 한 곳에서 입력 화면 · 저장 검증 · 엑셀 출력을 만들고, 양식 검증 화면에서 항목별 화면 · 저장 · 엑셀 위치를 대조합니다. 양식이 개정되어도 <b>과거 서류는 작성 당시 버전</b>으로 열립니다</li>
+          <li>협력업체 작업허가의 신청 · 보완 요청 · 재신청 · 승인과 차수 비교, 서류 <b>엑셀(.xlsx)</b> 내려받기와 사진을 포함한 <b>파일 묶음(.zip)</b></li>
+        </ul>
+        <span class="go">서비스 화면 열기 <svg class="s" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+
+    <div class="quick" aria-label="바로 가기">
+      <a href="prototype/index.html">관리자 · 협력업체 로그인 바로 가기</a>
+      <a href="prototype/index.html#/m">작업자 작업 확인 화면 바로 가기</a>
+    </div>
+
+    <div class="note">
+      <b>검색 노출을 제한했지만, 주소를 아는 사람은 누구나 열 수 있습니다.</b>
+      <p>모든 페이지에 검색 엔진에 색인하지 말 것을 요청하는 설정(<code>noindex</code>)을 적용했으나 별도의 접근 제한은 없습니다.
+        제안 금액 등 민감한 정보가 포함되어 있으니 <b>발주처 내부 관계자에게만</b> 공유해 주시기 바랍니다.</p>
+    </div>
+
+    <div class="note">
+      <b>서비스 화면에 표시되는 회사·현장·인물·수치는 모두 가상의 예시입니다.</b>
+      <p>고객사·현장·협력업체·작업자 정보와 전화번호는 <b>가상의 자료</b>이며 실제 기업과 관계가 없습니다. 화면에 쓰인 사진은 시연용으로 생성한 이미지이며 실제 시설이나 현장 증빙이 아닙니다.
+        알림톡은 실제로 발송되지 않습니다. 화면에서 변경한 값과 로그인 상태는 <b>지금 사용 중인 브라우저에만</b> 저장되며, 다른 사람의 화면이나 서버에는 반영되지 않습니다.
+        처음 상태로 되돌리려면 로그인 화면의 <b>「체험 데이터 초기화」</b>를 눌러 주세요.</p>
+    </div>
+
+    <div class="note">
+      <b>서류 양식과 일부 설정값은 협의 전 가정값이며, 정확한 개발 범위는 웹 제안서를 기준으로 합니다.</b>
+      <p>안전 서류 기본 6종의 항목과 「근거」 칸은 <b>시연용 예시</b>이며, 법적으로 갖춰야 하는 항목은 발주처(또는 고객사)가 양식 항목 정의서에서 확정합니다.
+        작업자 본인 확인(휴대전화 뒤 4자리)은 간편 확인이며, 추가 인증 필요 여부는 계약 전에 협의합니다.
+        다국어 화면, 통계 리포트 화면, 원본 서식 재현 2종째부터, 앱 개발, 알림톡 발송료는 <b>1차 범위에 포함되지 않습니다.</b>
+        각 항목의 근거는 <b>웹 제안서의 「기간·예산」·「개발 범위」 섹션</b>에서 확인하실 수 있습니다.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>공장·플랜트 작업·안전관리 통합 웹서비스 구축 제안 · 위시켓 158930</span>
+    <span>제안 금액과 기간은 제출 제안서를 기준으로 합니다.</span>
+  </div>
+</footer>
+
+</body>
+</html>
